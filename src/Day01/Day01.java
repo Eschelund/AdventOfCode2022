@@ -3,7 +3,10 @@ package Day01;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day01 {
 
@@ -49,7 +52,7 @@ public class Day01 {
 
     public static void main(String[] args) {
         try {
-            Path path = Paths.get("C:\\Users\\Ricco\\IdeaProjects\\AdventOfCode2022\\src\\Day01\\input_day01.txt");
+            Path path = Paths.get("D:\\Repositories\\AdventOfCode\\AdventOfCode2022\\src\\Day01\\input_day01.txt");
             List<String> instructions = Files.readAllLines(path);
 
             solution1(instructions);
@@ -59,11 +62,43 @@ public class Day01 {
         }
     }
 
-    public static void solution1(List<String> instructions) {
+    /**
+     * --- Part Two ---
+     * By the time you calculate the answer to the Elves' question, they've already realized that the Elf carrying the most Calories of food might eventually run out of snacks.
+     * <p>
+     * To avoid this unacceptable situation, the Elves would instead like to know the total Calories carried by the top three Elves carrying the most Calories. That way, even if one of those Elves runs out of snacks, they still have two backups.
+     * <p>
+     * In the example above, the top three Elves are the fourth Elf (with 24000 Calories), then the third Elf (with 11000 Calories), then the fifth Elf (with 10000 Calories). The sum of the Calories carried by these three elves is 45000.
+     * <p>
+     * Find the top three Elves carrying the most Calories. How many Calories are those Elves carrying in total?
+     */
 
+    public static void solution1(List<String> instructions) {
+        int max = 0;
+        int tmp = 0;
+        for (String s : instructions) {
+            if (s.isEmpty()) {
+                max = Math.max(max, tmp);
+                tmp = 0;
+                continue;
+            }
+            tmp += Integer.parseInt(s);
+        }
+        System.out.println(max);
     }
 
     public static void solution2(List<String> instructions) {
-
+        List<Integer> calories = new ArrayList<>();
+        int tmp = 0;
+        for (String s : instructions) {
+            if (s.isEmpty()) {
+                calories.add(tmp);
+                tmp = 0;
+                continue;
+            }
+            tmp += Integer.parseInt(s);
+        }
+        System.out.println(calories.stream().sorted(Comparator.reverseOrder()).limit(3).collect(Collectors.toList()));
+        System.out.println(calories.stream().sorted(Comparator.reverseOrder()).limit(3).reduce(Integer::sum));
     }
 }
