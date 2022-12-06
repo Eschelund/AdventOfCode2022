@@ -100,6 +100,24 @@ public class Day03 {
      * Find the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?
      */
     public static void solution2(List<String> instructions) {
+        int sum = 0;
+        for (int i = 0; i < instructions.size(); i += 3) {
+            Character[] c1 = instructions.get(i).chars().mapToObj(c -> (char) c).toArray(Character[]::new);
+            Character[] c2 = instructions.get(i + 1).chars().mapToObj(c -> (char) c).toArray(Character[]::new);
+            Character[] c3 = instructions.get(i + 2).chars().mapToObj(c -> (char) c).toArray(Character[]::new);
+            sum += triplicateItemPriority(c1, c2, c3);
+        }
+        System.out.println(sum);
+    }
 
+    private static int triplicateItemPriority(Character[] first, Character[] second, Character[] third) {
+        for (Character c : first) {
+            if (Arrays.stream(second).anyMatch(c2 -> c == c2)) {
+                if (Arrays.stream(third).anyMatch(c3 -> c == c3)) {
+                    return (int) c > 96 ? ((int) c) - 96 : ((int) c) - 64 + 26;
+                }
+            }
+        }
+        return 0;
     }
 }
